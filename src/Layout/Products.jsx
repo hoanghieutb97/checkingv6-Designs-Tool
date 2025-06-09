@@ -1,28 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { PRODUCTS } from '../constants';
-import { Button, Menu } from 'antd';
+import { Menu } from 'antd';
 import { useStore, actions } from '../store';
-import _ from "lodash";
-import { PartitionOutlined, } from '@ant-design/icons'
-// import { dispatchProperties } from '../store/actions';
+import { PartitionOutlined } from '@ant-design/icons'
+
 function Products(props) {
     const [state, dispatch] = useStore();
     const { activeProduct } = state
-    useEffect(() => {
-        dispatch(actions.dispatchProduct({
-            ...activeProduct,
-            list: PRODUCTS[PRODUCTS.length - 1][0],
-            product: PRODUCTS[PRODUCTS.length - 1][1][PRODUCTS[PRODUCTS.length - 1][1].length - 1][0]
-        }))
-    }, []);
+    const menuRef = useRef(null);
 
-    function getItem(label, key, icon, children, type) { return { key, icon, children, label, type, }; }
-    const items = PRODUCTS.map(item => getItem(item[0], item[0], <PartitionOutlined />, item[1].map(itemx => getItem(itemx[1], itemx[0]))))
-    let clickMenu = ({ keyPath }) => {
-        dispatch(actions.dispatchProduct({ list: keyPath[1], product: keyPath[0] }))
+    function getItem(label, key, icon, children, type) { 
+        return { key, icon, children, label, type }; 
     }
+
+    const items = PRODUCTS.map(item => 
+        getItem(item[0], item[0], <PartitionOutlined />, 
+            item[1].map(itemx => getItem(itemx[1], itemx[0]))
+        )
+    )
+
+    const clickMenu = ({ keyPath }) => {
+        if (keyPath && keyPath.length >= 2) {
+            dispatch(actions.dispatchProduct({ 
+                list: keyPath[1], 
+                product: keyPath[0] 
+            }))
+        }
+    }
+
     const rootSubmenuKeys = PRODUCTS.map(item => item[0]);
+    
     const onOpenChange = (keys) => {
+        if (!activeProduct) return;
+        
         const latestOpenKey = keys.find((key) => [activeProduct.list].indexOf(key) === -1);
         if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
             dispatch(actions.dispatchProduct({ ...activeProduct, list: keys }))
@@ -30,72 +40,38 @@ function Products(props) {
             dispatch(actions.dispatchProduct({ ...activeProduct, list: latestOpenKey ? latestOpenKey : "" }))
         }
     };
+
+    // Scroll to selected item when activeProduct changes
     useEffect(() => {
-        let arrMica = ["keyChain mirror",
-            "NEW transparent ORM 1M",
-            "NEW transparent ORM 2M",
-            "ornament mica 1M-fill",
-            "ornament mica 2M-fill",
-            "ornament mica DZT",
-            "ornament led",
-            "3d wood base",
-            "3d woodBase Teemazing",
-            "Acrylic Plaque",
-            "ornament qua ta nhom",
-            "Acrylic Plaque TMZ",
-            "mirror normal StrokFile",
-            "photo frame lamp",
-            "Acrylic Desk Plaque",
-            "mica fix ornament 1M",
-            "mica fix ornament 2M",
-            "Tumble Name Tag",
-            "5L Shaker Ornament",
-            "3L Shaker Ornament",
-            "Luminous Painting Lighting Box",
-            "Led Light Wood Base TMZ"
+        if (activeProduct && menuRef.current) {
+            // Add a small delay to ensure DOM is ready
+            setTimeout(() => {
+                const selectedElement = menuRef.current.querySelector('.ant-menu-item-selected');
+                if (selectedElement) {
+                    const containerRect = menuRef.current.getBoundingClientRect();
+                    const elementRect = selectedElement.getBoundingClientRect();
+                    
+                    // Always scroll on first selection, then check visibility for subsequent selections
+                    if (!activeProduct._hasScrolled || elementRect.top < containerRect.top || elementRect.bottom > containerRect.bottom) {
+                        menuRef.current.scrollTo({
+                            top: selectedElement.offsetTop - menuRef.current.offsetHeight / 2 + selectedElement.offsetHeight / 2,
+                            behavior: 'smooth'
+                        });
+                        // Mark that we've scrolled for this selection
+                        dispatch(actions.dispatchProduct({ ...activeProduct, _hasScrolled: true }));
+                    }
+                }
+            }, 100);
+        }
+    }, [activeProduct]);
 
+    // Nếu chưa có activeProduct, không render menu
+    if (!activeProduct) {
+        return null;
+    }
 
-        ];
-        let arrGo = [
-            "ornament go 1M-Singer",
-            "ornament go 2M-Singer",
-            "ornament vong huong",
-            "wood ornament dls",
-            "wood fix ornament 2M",
-            "wood fix ornament 1M",
-            "3layer wood ornament",
-            "2layer wood ornament",
-            "wood fix ornament 1M",
-            "Wooden Parterre",
-            "wood fix ornament 2M",
-            " Wooden Picture Frame Magnet"
-
-
-        ];
-        let arrGoXXXXXX = ["FatherDayZirror"]
-        let arrMica2cm = ["Heart mica 2cm",
-            "Acrylic Block",
-            "Custom Acrylic Name Night Light",
-            "Custom Acrylic Name Night Light pine",
-
-        ];
-        let arrNauBan = ["ornament su 1M", "ornament su 2M"];
-        if (_.indexOf(arrMica, activeProduct.product) !== (-1))
-            dispatch(actions.dispatchProduct({ ...activeProduct, hAll: 812, wAll: 1210 }))
-        else if (_.indexOf(arrGo, activeProduct.product) !== (-1))
-            dispatch(actions.dispatchProduct({ ...activeProduct, hAll: 910, wAll: 910 }))
-        else if (_.indexOf(arrMica2cm, activeProduct.product) !== (-1))
-            dispatch(actions.dispatchProduct({ ...activeProduct, hAll: 350, wAll: 2440 }))
-        else if (_.indexOf(arrGoXXXXXX, activeProduct.product) !== (-1))
-            dispatch(actions.dispatchProduct({ ...activeProduct, hAll: 915, wAll: 915 }))
-        else if (_.indexOf(arrNauBan, activeProduct.product) !== (-1))
-            dispatch(actions.dispatchProduct({ ...activeProduct, hAll: 600, wAll: 2400 }))
-
-    }, [activeProduct.product]);
-    console.log(state);
     return (
-        <div className='ctn-pro'>
-
+        <div className='ctn-pro' ref={menuRef}>
             <Menu
                 selectedKeys={[activeProduct.product]}
                 openKeys={[activeProduct.list]}

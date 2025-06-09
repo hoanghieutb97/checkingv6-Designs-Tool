@@ -1,0 +1,45 @@
+.excel-upload-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.upload-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title-ex {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.mode-switch {
+    margin-left: 20px;
+}
+
+.ant-upload-drag {
+    border: 2px dashed #d9d9d9;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    background: #fafafa;
+    transition: border-color 0.3s;
+}
+
+.ant-upload-drag:hover {
+    border-color: #1890ff;
+}
+
+.action-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.ant-alert {
+    margin: 10px 0;
+} 
