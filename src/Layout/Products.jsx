@@ -1,86 +1,81 @@
 import React, { useEffect, useRef } from 'react';
-import { PRODUCTS } from '../constants';
+import { useProducts } from '../hooks/useProducts';
 import { Menu } from 'antd';
 import { useStore, actions } from '../store';
 import { PartitionOutlined } from '@ant-design/icons'
 
 function Products(props) {
     const [state, dispatch] = useStore();
-    const { activeProduct } = state
+    const { activeProduct } = state;
     const menuRef = useRef(null);
+    const { products = [], isLoading } = useProducts();
 
     function getItem(label, key, icon, children, type) { 
         return { key, icon, children, label, type }; 
     }
 
-    const items = PRODUCTS.map(item => 
-        getItem(item[0], item[0], <PartitionOutlined />, 
-            item[1].map(itemx => getItem(itemx[1], itemx[0]))
-        )
-    )
-
-    const clickMenu = ({ keyPath }) => {
-        if (keyPath && keyPath.length >= 2) {
-            dispatch(actions.dispatchProduct({ 
-                list: keyPath[1], 
-                product: keyPath[0] 
-            }))
-        }
-    }
-
-    const rootSubmenuKeys = PRODUCTS.map(item => item[0]);
-    
-    const onOpenChange = (keys) => {
-        if (!activeProduct) return;
-        
-        const latestOpenKey = keys.find((key) => [activeProduct.list].indexOf(key) === -1);
-        if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-            dispatch(actions.dispatchProduct({ ...activeProduct, list: keys }))
-        } else {
-            dispatch(actions.dispatchProduct({ ...activeProduct, list: latestOpenKey ? latestOpenKey : "" }))
-        }
-    };
-
-    // Scroll to selected item when activeProduct changes
     useEffect(() => {
-        if (activeProduct && menuRef.current) {
-            // Add a small delay to ensure DOM is ready
-            setTimeout(() => {
-                const selectedElement = menuRef.current.querySelector('.ant-menu-item-selected');
-                if (selectedElement) {
-                    const containerRect = menuRef.current.getBoundingClientRect();
-                    const elementRect = selectedElement.getBoundingClientRect();
-                    
-                    // Always scroll on first selection, then check visibility for subsequent selections
-                    if (!activeProduct._hasScrolled || elementRect.top < containerRect.top || elementRect.bottom > containerRect.bottom) {
-                        menuRef.current.scrollTo({
-                            top: selectedElement.offsetTop - menuRef.current.offsetHeight / 2 + selectedElement.offsetHeight / 2,
-                            behavior: 'smooth'
-                        });
-                        // Mark that we've scrolled for this selection
-                        dispatch(actions.dispatchProduct({ ...activeProduct, _hasScrolled: true }));
-                    }
-                }
-            }, 100);
+        if (activeProduct?.product) {
+            const selectedElement = document.querySelector('.ant-menu-item-selected');
+            if (selectedElement) {
+                selectedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
     }, [activeProduct]);
 
-    // Nếu chưa có activeProduct, không render menu
-    if (!activeProduct) {
-        return null;
+    // Create menu items (single level)
+    const items = products.map(product => 
+        getItem(product.displayName, product.name, <PartitionOutlined />)
+    );
+
+    const clickMenu = ({ key }) => {
+        dispatch(actions.dispatchProduct({ 
+            list: 'All',
+            product: key
+        }));
+    };
+
+    if (isLoading) {
+        return <div>Loading...</div>;
     }
 
     return (
-        <div className='ctn-pro' ref={menuRef}>
+        <div className="products-menu">
             <Menu
-                selectedKeys={[activeProduct.product]}
-                openKeys={[activeProduct.list]}
-                onOpenChange={onOpenChange}
                 mode="inline"
-                theme="dark"
-                onClick={(item) => clickMenu(item)}
                 items={items}
+                onClick={clickMenu}
+                selectedKeys={activeProduct ? [activeProduct.product] : []}
+                ref={menuRef}
+                style={{
+                    backgroundColor: '#001529',
+                    color: 'white',
+                    height: '94vh',
+                    overflowY: 'auto'
+                }}
             />
+            <style>{`
+                .products-menu {
+                    height: 87vh;
+                    overflow: hidden;
+                }
+                .products-menu .ant-menu {
+                    height: 100%;
+                }
+                .products-menu .ant-menu-item {
+                    color: rgba(255, 255, 255, 0.65);
+                }
+                .products-menu .ant-menu-item:hover {
+                    color: white;
+                }
+                .products-menu .ant-menu-item-selected {
+                    background-color: #1890ff !important;
+                    color: white !important;
+                }
+                .products-menu .ant-menu-item-selected::after {
+                    border-right-color: #1890ff;
+                }
+            `}</style>
         </div>
     );
 }

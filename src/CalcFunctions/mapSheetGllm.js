@@ -1,5 +1,4 @@
 import _ from "lodash";
-import Products from "../Layout/Products";
 import sortSheet from './sortSheet';
 
 export default function mapSheetGllm({ sheet, gllm, product }) {

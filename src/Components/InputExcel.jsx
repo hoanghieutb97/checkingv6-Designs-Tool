@@ -7,10 +7,12 @@ import sortSheet from '../CalcFunctions/sortSheet';
 import mapSheetGllm from '../CalcFunctions/mapSheetGllm';
 import checkActiveProduct from '../CalcFunctions/checkActiveProduct';
 import dupItems from '../CalcFunctions/dupItems';
+import { useProducts } from '../hooks/useProducts';
 
 function InputExcel() {
     const [state, dispatch] = useStore();
     let { gllm, sheet = [], activeProduct } = state;
+    const { products = [] } = useProducts();
     const [MultiExcel, setMultiExcel] = useState(false);
     const [Filename, setFilename] = useState();
     const [Excel, setExcel] = useState([]);
@@ -62,9 +64,9 @@ function InputExcel() {
 
     useEffect(() => {
         if (Array.isArray(sheet) && sheet.length > 0) {
-            dispatch(actions.dispatchProduct({ ...checkActiveProduct(sheet), fileName: Filename }))
+            dispatch(actions.dispatchProduct({ ...checkActiveProduct(sheet, products), fileName: Filename }))
         }
-    }, [sheet]);
+    }, [sheet, products]);
 
     useEffect(() => {
         if (gllm.length !== 0) {

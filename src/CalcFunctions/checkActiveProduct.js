@@ -1,29 +1,29 @@
 import { List } from "antd";
 import _ from "lodash";
-import { PRODUCTS } from '../constants';
 
-export default function checkActiveProduct(sheet) {
+export default function checkActiveProduct(sheet, products = []) {
+    if (!sheet || !Array.isArray(sheet)) {
+        console.warn('Sheet is not valid:', sheet);
+        return null;
+    }
+
     let activeProduct = _.uniq(sheet.map(item => item.button));
 
-    
-
     activeProduct = activeProduct.map(item => {
+        if (!item) return null;
 
         let item2;
-        for (let i = 0; i < PRODUCTS.length; i++) {
-            for (let j = 0; j < PRODUCTS[i][1].length; j++) {
-                if (_.intersection([item], PRODUCTS[i][1][j]).length == 1) {
-                    item2 = {
-                        list: PRODUCTS[i][0],
-                        product: PRODUCTS[i][1][j][0]
-                    }
-                    return item2
+        for (let i = 0; i < products.length; i++) {
+            if (products[i] && products[i].name === item) {
+                item2 = {
+                    list: products[i].type || 'Other',
+                    product: products[i].name
                 }
+                return item2;
             }
         }
-
-        
-    })
+        return null;
+    }).filter(Boolean); // Remove null values
     
-    return activeProduct[0]
+    return activeProduct[0] || null;
 }

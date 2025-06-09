@@ -5,6 +5,10 @@ import { useStore, actions } from './store';
 import axios from 'axios';
 import * as constants from './constants';
 import AddActiveLocalFile from './Components/AddActiveLocalFile';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Products from './Layout/Products';
+
+const queryClient = new QueryClient();
 
 function App(props) {
   const [state, dispatch] = useStore();
@@ -23,16 +27,18 @@ function App(props) {
 
   // console.log(gllm);
   return (
-    <React.Fragment>
-      {loadding === true ? <div className="loader">
-        <div className="outer"></div>
-        <div className="middle"></div>
-        <div className="inner"></div>
-      </div> : ""}
-      <Navbar />
-      <Body />
-
-    </React.Fragment>
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        
+        {loadding === true ? <div className="loader">
+          <div className="outer"></div>
+          <div className="middle"></div>
+          <div className="inner"></div>
+        </div> : ""}
+        <Navbar />
+        <Body />
+      </div>
+    </QueryClientProvider>
   );
 }
 

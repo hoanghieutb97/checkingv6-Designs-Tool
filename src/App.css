@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.products-menu {
+    height: 100%;
+    overflow: hidden;
+}
+
+.products-menu .ant-menu {
+    height: 100%;
+}
+
+.products-menu .ant-menu-submenu-title {
+    font-weight: 500;
+}
+
+.products-menu .ant-menu-item {
+    padding-left: 48px !important;
+}
+
+.products-menu .ant-menu-submenu {
+    margin-bottom: 4px;
+}
+
+.products-menu .ant-menu-item-selected {
+    background-color: #e6f7ff;
+}
