@@ -3,7 +3,7 @@ export const GLLM = "https://sheet.best/api/sheets/e8876c80-1778-414d-ae68-af6b9
 // PRODUCTS đã chuyển sang dùng MongoDB, không cần export nữa.
 
 // API Configuration
-export const API_BASE_URL = '192.168.1.240:5000';
+export const API_BASE_URL = 'http://192.168.1.240:5000';
 export const API_URL = `${API_BASE_URL}/api`;
 
 // Upload Configuration
