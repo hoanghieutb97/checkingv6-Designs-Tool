@@ -11,27 +11,16 @@ function Navbar(props) {
             <div className="row">
                 <div className="col-12 p-0">
                     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                        <div className="navbar-brand" >CheckingV4-Utimate</div>
+                        <div className="navbar-brand" >CheckingV6-Design-Tool</div>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <div className="collapse navbar-collapse" id="navbarText">
                             <ul className="navbar-nav mr-auto">
-                                {/* <li className="nav-item dropdown active">
-                                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        File excel
-                                    </a>
-                                    <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a className="dropdown-item" target="_blank" href="https://docs.google.com/spreadsheets/d/1WXgvwa76BHiBARCQIU9aDLhslwBp9oOB8_FV3YrQXbg">GLLM</a>
-                                        <a className="dropdown-item" target="_blank" href="https://docs.google.com/spreadsheets/d/14Z32zhFCEBwKJT5piRS2eEffkOrlC8FnWJk5PpPbfYk">Silicon</a>
-                                    </div>
-                                </li>
-                                <li className="nav-item dropdown active">
-                                    <ModalURLDesign />
-                                </li> */}
+              
                                 <li className="btc">
                                     <CopyOrderId />
-                                    {/* <CheckTrello /> */}
+                                    
                                 </li>
                             </ul>
                         </div>

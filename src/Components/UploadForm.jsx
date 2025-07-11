@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from 'antd';
+import { UPLOAD_URL } from '../constants';
 
 const UploadForm = () => {
   const [file, setFile] = useState(null);
@@ -19,7 +20,7 @@ const UploadForm = () => {
     try {
       setStatusDown(false)
 
-      const response = await axios.post('http://192.168.1.194:3008/upload', formData, {
+      const response = await axios.post(UPLOAD_URL, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -38,11 +39,7 @@ const UploadForm = () => {
       <Button type="primary" onClick={handleFileUpload}>
         Tải File
       </Button>
-      {/* <Button type="primary" onClick={handleFileUpload2} className='svsv'>
-        Tải File2
-      </Button> */}
-      {/* <button onClick={handleFileUpload}>Upload</button> */}
-
+   
     </div >
   );
 };

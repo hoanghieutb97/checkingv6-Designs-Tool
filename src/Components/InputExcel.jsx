@@ -38,12 +38,13 @@ function InputExcel() {
                         note: item[11],
                         location: item[12],
                         ItemBarcode: item[13],
-                        TikTokShipBy: item[14],
-                        Priority: item[15],
-                        Factory: item[16],
-                        ProductionNote: item[17],
-                        QCNote: item[18],
-                        Status: item[19]
+                        OrderType: item[14],
+                        TikTokShipBy: item[15],
+                        Priority: item[16],
+                        Factory: item[17],
+                        ProductionNote: item[18],
+                        QCNote: item[19],
+                        Status: item[20]
                     }))
                     newSheet.shift(); newSheet.shift();
                     newSheet = newSheet.filter(item => item.orderId !== null);
@@ -112,27 +113,59 @@ function InputExcel() {
             </div>
 
             {(MultiExcel)
-                ? <input type="file" className='bdffb' id="input" multiple />
-                : <input type="file" className='bdffb' id="input" />
+                ? <input 
+                    type="file" 
+                    className='bdffb' 
+                    id="input" 
+                    multiple 
+                    style={{
+                        width: '100%',
+                        padding: '20px',
+                        border: '3px dashed #d9d9d9',
+                        borderRadius: '12px',
+                        backgroundColor: '#fafafa',
+                        fontSize: '16px',
+                        cursor: 'pointer',
+                        margin: '15px 0',
+                        minHeight: '80px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                />
+                : <input 
+                    type="file" 
+                    className='bdffb' 
+                    id="input" 
+                    style={{
+                        width: '100%',
+                        padding: '20px',
+                        border: '3px dashed #d9d9d9',
+                        borderRadius: '12px',
+                        backgroundColor: '#fafafa',
+                        fontSize: '16px',
+                        cursor: 'pointer',
+                        margin: '15px 0',
+                        minHeight: '80px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                />
             }
 
             <div className="action-buttons">
-                <Button
+                <Button 
+                    className='w-100 h-3'
                     type="primary"
                     icon={<DownloadOutlined />}
                     onClick={() => saveTextAsFile(strWrite)}
+                    style={{ height: '50px' }}
                 >
                     Download JSON
                 </Button>
                 
-                <Button
-                    icon={<ReloadOutlined />}
-                    onClick={() => {
-                        setExcel([]);
-                    }}
-                >
-                    Reset
-                </Button>
+           
             </div>
         </div>
     );
