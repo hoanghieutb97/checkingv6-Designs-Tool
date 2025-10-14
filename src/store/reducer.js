@@ -1,7 +1,8 @@
-import { SET_GLLM, SET_SHEET, SET_PRODUCT } from "./constants";
+import { SET_GLLM, SET_SHEET, SET_PRODUCT, SET_GLLMUS } from "./constants";
 
 export const initState = {
     gllm: [],
+    gllmUS: [],
     sheet: [],
     activeProduct: {
         list: null,
@@ -22,7 +23,11 @@ function reducer(state, action) {
                 ...state,
                 gllm: action.payload
             }
-
+        case SET_GLLMUS:
+            return {
+                ...state,
+                gllmUS: action.payload
+            }
         case SET_SHEET:
             return {
                 ...state,

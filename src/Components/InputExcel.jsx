@@ -11,7 +11,7 @@ import { useProducts } from '../hooks/useProducts';
 
 function InputExcel() {
     const [state, dispatch] = useStore();
-    let { gllm, sheet = [], activeProduct } = state;
+    let { gllm, gllmUS, sheet = [], activeProduct } = state;
     const { products = [] } = useProducts();
     const [MultiExcel, setMultiExcel] = useState(false);
     const [Filename, setFilename] = useState();
@@ -71,7 +71,11 @@ function InputExcel() {
 
     useEffect(() => {
         if (gllm.length !== 0) {
-            dispatch(actions.dispatchSheet(mapSheetGllm({ gllm, sheet: Excel })));
+         
+
+            const firstOrderId = Excel.filter(item => item.orderId !== null)[0]?.orderId;
+            if (firstOrderId?.toLowerCase().startsWith('fko')) dispatch(actions.dispatchSheet(mapSheetGllm({ gllm: gllmUS, sheet: Excel })));
+            else dispatch(actions.dispatchSheet(mapSheetGllm({ gllm: gllm, sheet: Excel })));
         }
     }, [Excel]);
 
@@ -113,11 +117,11 @@ function InputExcel() {
             </div>
 
             {(MultiExcel)
-                ? <input 
-                    type="file" 
-                    className='bdffb' 
-                    id="input" 
-                    multiple 
+                ? <input
+                    type="file"
+                    className='bdffb'
+                    id="input"
+                    multiple
                     style={{
                         width: '100%',
                         padding: '20px',
@@ -133,10 +137,10 @@ function InputExcel() {
                         justifyContent: 'center'
                     }}
                 />
-                : <input 
-                    type="file" 
-                    className='bdffb' 
-                    id="input" 
+                : <input
+                    type="file"
+                    className='bdffb'
+                    id="input"
                     style={{
                         width: '100%',
                         padding: '20px',
@@ -155,7 +159,7 @@ function InputExcel() {
             }
 
             <div className="action-buttons">
-                <Button 
+                <Button
                     className='w-100 h-3'
                     type="primary"
                     icon={<DownloadOutlined />}
@@ -164,8 +168,8 @@ function InputExcel() {
                 >
                     Download JSON
                 </Button>
-                
-           
+
+
             </div>
         </div>
     );

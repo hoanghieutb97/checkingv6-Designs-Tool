@@ -9,9 +9,9 @@ export const useProducts = () => {
   const { data: products, isLoading, error } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
-      console.log('Fetching products from API...');
+
       const response = await axios.get(`${API_URL}/products`);
-      console.log('API Response:', response.data);
+
       return response.data;
     }
   });

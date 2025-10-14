@@ -50,7 +50,7 @@ function Products(props) {
                 style={{
                     backgroundColor: '#001529',
                     color: 'white',
-                    height: '94vh',
+                    height: '99vh',
                     overflowY: 'auto'
                 }}
             />

@@ -19,7 +19,7 @@ export default function sortSheet(sheet, product) {
                 if (arr1[i] !== undefined) arr5[i] = [...arr5[i], arr1[i]]
 
             }
-            console.log(arr5);
+         
             return _.flattenDeep(arr5)
         }
         else {
@@ -64,7 +64,7 @@ export default function sortSheet(sheet, product) {
 
 
             product === "mica DZT Style") {
-            console.log(sheet);
+         
             sheet = _.orderBy(sheet, ['variant', 'orderId', 'sku'], ['asc', 'asc', 'asc']).map((item, key) => ({ ...item, stt: key + 1 }));
 
 

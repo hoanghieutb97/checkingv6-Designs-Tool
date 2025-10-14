@@ -14,14 +14,22 @@ function App(props) {
   const [state, dispatch] = useStore();
   const { gllm, sheet } = state
   const [loadding, setloadding] = useState(true);
+
+  
+
   useEffect(() => { // fetch GLLM
     async function fetchData() {
       var gllmAPI = await axios(constants.GLLM);
-      gllmAPI =gllmAPI.data.filter(item=>item.width!==null)
+      gllmAPI = gllmAPI.data.filter(item => item.width !== null)
       // console.log(gllmAPI);
       dispatch(actions.dispatchGLLM(gllmAPI));
+
+      var gllmUSAPI = await axios(constants.GLLMUS);
+      gllmUSAPI = gllmUSAPI.data.filter(item => item.width !== null)
+      dispatch(actions.dispatchGLLMUS(gllmUSAPI));
+      
       setloadding(false)
-    }
+    } 
     fetchData();
   }, []);
 
@@ -29,7 +37,7 @@ function App(props) {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="App">
-        
+
         {loadding === true ? <div className="loader">
           <div className="outer"></div>
           <div className="middle"></div>

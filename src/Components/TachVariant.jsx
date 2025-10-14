@@ -8,7 +8,7 @@ import dupItems from '../CalcFunctions/dupItems';
 function TachVariant(props) {
     const [state, dispatch] = useStore();
     let { sheet, activeProduct } = state;
-    console.log(sheet);
+    
     const [ActiveButton, setActiveButton] = useState([]);
     let listVariant = _.uniq(sheet.map(item => item.variant)).map(item => sheet.filter(itemFilter => itemFilter.variant === item))
     let handChangeButton = (item) => {
