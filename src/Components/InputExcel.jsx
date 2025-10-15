@@ -3,7 +3,8 @@ import { Button, Switch } from 'antd';
 import { DownloadOutlined, ReloadOutlined } from '@ant-design/icons';
 import readXlsxFile from 'read-excel-file';
 import { useStore, actions } from '../store';
-import sortSheet from '../CalcFunctions/sortSheet';
+// import sortSheet from '../CalcFunctions/sortSheet';
+import sortSheet from '../services/sortSheetService';
 import mapSheetGllm from '../CalcFunctions/mapSheetGllm';
 import checkActiveProduct from '../CalcFunctions/checkActiveProduct';
 import dupItems from '../CalcFunctions/dupItems';
@@ -71,7 +72,7 @@ function InputExcel() {
 
     useEffect(() => {
         if (gllm.length !== 0) {
-         
+
 
             const firstOrderId = Excel.filter(item => item.orderId !== null)[0]?.orderId;
             if (firstOrderId?.toLowerCase().startsWith('fko')) dispatch(actions.dispatchSheet(mapSheetGllm({ gllm: gllmUS, sheet: Excel })));
@@ -89,8 +90,10 @@ function InputExcel() {
         downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
         downloadLink.click();
     }
+    // let xxxx = sortSheet2(sheet, activeProduct.product, products);
+    // console.log("xxxx", xxxx);
 
-    sheet = sortSheet(sheet, activeProduct.product)
+    sheet = sortSheet(sheet, activeProduct.product,products)
 
     let strWrite = {
         items: dupItems(sheet),

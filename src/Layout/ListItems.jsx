@@ -2,11 +2,18 @@ import React from 'react';
 import { useStore, actions } from '../store';
 import dupItems from '../CalcFunctions/dupItems';
 import copy from 'copy-to-clipboard';
-import sortSheet from '../CalcFunctions/sortSheet';
+import sortSheet from '../services/sortSheetService';
+import { useProducts } from '../hooks/useProducts';
+
 function ListItems(props) {
     const [state, dispatch] = useStore();
+    const { products = [] } = useProducts();
+
     let { sheet, activeProduct } = state;
-    sheet = sortSheet(sheet, activeProduct.product)
+    
+
+    sheet = sortSheet(sheet, activeProduct.product, products)
+
 
     return (
         <div>
@@ -15,6 +22,7 @@ function ListItems(props) {
 
                     {dupItems(sheet).map(item => <div className="col-15" key={item.stt}>
                         <div className="ctn-itemlist">
+                            
                             <div className="nameid1 cpt" onClick={() => copy(item.orderId)}>{item.orderId}</div>
                             <div className="sku1 cpt" onClick={() => copy(item.sku)}>{item.sku}</div>
                             <div className="product1 cpt" onClick={() => copy(item.product)}> {item.product}</div>

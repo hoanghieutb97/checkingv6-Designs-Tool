@@ -29,6 +29,8 @@ function Products(props) {
     );
 
     const clickMenu = ({ key }) => {
+        console.log("key", key);
+        
         dispatch(actions.dispatchProduct({ 
             list: 'All',
             product: key
