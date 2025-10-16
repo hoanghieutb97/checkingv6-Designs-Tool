@@ -27,17 +27,40 @@ router.get('/:id', async (req, res) => {
 
 // Create product
 router.post('/', async (req, res) => {
+  
+  
+  // Check if product with same name already exists
+  try {
+    const existingProduct = await Product.findOne({ name: req.body.name });
+    if (existingProduct) {
+      
+      return res.status(400).json({ 
+        message: `Product with name "${req.body.name}" already exists` 
+      });
+    }
+  } catch (checkError) {
+    console.log("Error checking existing product:", checkError);
+  }
+  
   const product = new Product(req.body);
   try {
     const newProduct = await product.save();
     res.status(201).json(newProduct);
   } catch (error) {
+    console.log("Error details:", error);
+    console.log("Error message:", error.message);
+    console.log("Error name:", error.name);
+    if (error.errors) {
+      console.log("Validation errors:", error.errors);
+    }
     res.status(400).json({ message: error.message });
   }
 });
 
 // Update product
 router.put('/:id', async (req, res) => {
+
+
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {

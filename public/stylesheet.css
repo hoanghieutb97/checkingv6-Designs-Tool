@@ -555,7 +555,7 @@ li.ant-menu-submenu.ant-menu-submenu-inline {
     min-height: 94vh;
     background: #d7d7d7;
     padding: 0 5px;
-    grid-template-columns: 530px 350px 450px auto;
+    grid-template-columns: 530px 450px 450px auto;
 }
 
 .b-fileDesign {

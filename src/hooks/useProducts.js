@@ -19,8 +19,18 @@ export const useProducts = () => {
   // Create product
   const createProduct = useMutation({
     mutationFn: async (newProduct) => {
-      const response = await axios.post(`${API_URL}/products`, newProduct);
-      return response.data;
+      console.log("newProduct..........................", newProduct);
+      console.log("API_URL:", API_URL);
+      console.log("Sending request to:", `${API_URL}/products`);
+      try {
+        const response = await axios.post(`${API_URL}/products`, newProduct);
+        console.log("Response received:", response.data);
+        return response.data;
+      } catch (error) {
+        console.log("Error in createProduct:", error);
+        console.log("Error response:", error.response?.data);
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });

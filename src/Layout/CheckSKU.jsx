@@ -57,6 +57,18 @@ function CheckSKU(props) {
 
     }
     let arrKhaiBao = sheet.filter(item => item.nameId === undefined);
+    
+    // Lọc bỏ những item có cùng product và variant
+    const seen = new Set();
+    arrKhaiBao = arrKhaiBao.filter(item => {
+        const key = `${item.product || ''}-${item.variant || ''}`;
+        if (seen.has(key)) {
+            return false; // Bỏ item này
+        }
+        seen.add(key);
+        return true; // Giữ item này
+    });
+console.log("arrKhaiBao..........................", arrKhaiBao);
 
     return (<>
         {sheet.length !== 0 ? <div>

@@ -34,6 +34,10 @@ const productSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
+  },
+  typeProduct: {
+    type: String,
+    default: 'spkhac'
   }
 }, {
   timestamps: true,
