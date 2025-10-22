@@ -10,16 +10,34 @@ function Products(props) {
     const menuRef = useRef(null);
     const { products = [], isLoading } = useProducts();
     const [openKeys, setOpenKeys] = useState([]);
+    
+ 
 
     function getItem(label, key, icon, children, type) {
         return { key, icon, children, label, type };
     }
 
     useEffect(() => {
+
+        
         if (activeProduct?.product) {
             const activeProductData = products.find(p => p.name === activeProduct.product);
+       
+            
             if (activeProductData) {
-                setOpenKeys([activeProductData.typeProduct]);
+           
+                // Fallback to 'spkhac' if typeProduct is undefined
+                const typeProduct = activeProductData.typeProduct || 'spkhac';
+         
+                // Only set openKeys if the typeProduct exists in groupedProducts
+                if (groupedProducts[typeProduct]) {
+                
+                    setOpenKeys([typeProduct]);
+                } else {
+                
+                }
+            } else {
+            
             }
 
             const selectedElement = document.querySelector('.ant-menu-item-selected');
@@ -38,6 +56,8 @@ function Products(props) {
         acc[typeProduct].push(product);
         return acc;
     }, {});
+    
+
 
     // Create menu items with submenu structure (sorted by typeProduct)
     const items = Object.entries(groupedProducts)
@@ -56,24 +76,27 @@ function Products(props) {
         });
 
     const clickMenu = ({ key, keyPath }) => {
-        console.log("key", key);
-        console.log("keyPath", keyPath);
+   
+        
         // setOpenKeys([key])
         // Only dispatch if it's a product (not a typeProduct group)
         // If keyPath has 2 elements, the second one is the product name
         if (keyPath.length === 2) {
             const productName = keyPath[0];
+      
             dispatch(actions.dispatchProduct({
                 list: 'All',
                 product: productName
             }));
+        } else {
+          
         }
     };
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
-    console.log("products..........................", products);
+ 
 
     return (
         <div className="products-menu">
