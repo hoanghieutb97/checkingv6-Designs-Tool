@@ -94,7 +94,7 @@ function InputExcel() {
     // console.log("xxxx", xxxx);
 
     sheet = sortSheet(sheet, activeProduct.product,products)
-
+console.log("sheetttttttt", dupItems(sheet));
     let strWrite = {
         items: dupItems(sheet),
         type: activeProduct.product,
