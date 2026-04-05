@@ -27,7 +27,7 @@ function CopyOrderId(props) {
 
             <input className='kjvbskvsjn' onChange={(e) => setNameFolder(e.target.value)} defaultValue={ValueP}></input>
             <UploadForm />
-          {localStorage.NameFolder!==undefined?  <p className='vsjdhvs' >\\192.168.1.194\design\{JSON.parse(localStorage.NameFolder)}</p>:""}
+          {localStorage.NameFolder!==undefined?  <p className='vsjdhvs' >\\192.168.1.240\design\{JSON.parse(localStorage.NameFolder)}</p>:""}
 
         </>
     );
